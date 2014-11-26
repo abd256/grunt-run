@@ -41,6 +41,7 @@ function makeTask(grunt) {
     var cmd = this.data.cmd || 'node';
     var args = this.data.args || [];
     var additionalArgs = [];
+    var envParams = this.data.options.envParams;
     var opts = this.options({
       wait: true,
       failOnError: false,
@@ -57,6 +58,7 @@ function makeTask(grunt) {
     }
 
     var spawnOpts = {
+      env: envParams,
       cwd: opts.cwd,
       stdio: ['ignore', 'pipe', 'pipe']
     };
@@ -177,7 +179,7 @@ function makeTask(grunt) {
 
   grunt.task.registerMultiTask('stop', 'stop a process started with "run" ' +
     '(only works for tasks that use wait:false)', function () {
-      
+
     var pid = this.data._pid;
     var name = this.target;
     var proc = _.find(runningProcs, { pid: pid });
@@ -187,7 +189,7 @@ function makeTask(grunt) {
       grunt.log.ok(name + ' stopped');
     } else {
       grunt.log.ok(name + ' already stopped');
-    } 
+    }
   });
 
   grunt.task.registerMultiTask('wait', 'wait for a process started with "run" to close ' +
